@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.4.1)
 
-project(nacos-sdk-cpp)
+project(nacos-cli)
 
 #add_definitions(-DNACOS_AUTH)
 #add_definitions(-DNACOS_SPAS)
@@ -10,7 +10,6 @@ include_directories (
 include
 )
 
-include(CMakePackageConfigHelpers)
 
 aux_source_directory( src SRCS_DIRS)
 aux_source_directory( src/config SRCS_DIRS)
@@ -65,3 +64,34 @@ install(TARGETS nacos-cli
 install(DIRECTORY ${CMAKE_SOURCE_DIR}/include/
 		DESTINATION include/nacos
 		FILES_MATCHING PATTERN "*.h*")
+
+
+#install(
+#		EXPORT ${PROJECT_NAME}Targets
+#		FILE ${PROJECT_NAME}Targets.cmake
+#		DESTINATION lib/cmake/mylib
+#)
+
+set(INCLUDE_DIRS include)
+set(LIBRARIES nacos-cli)
+set(LIB_DIR lib)
+include(CMakePackageConfigHelpers)
+
+write_basic_package_version_file(
+		${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+		VERSION 1
+		COMPATIBILITY SameMajorVersion
+)
+
+configure_package_config_file(
+		${PROJECT_SOURCE_DIR}/${PROJECT_NAME}Config.cmake.in
+		${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+		INSTALL_DESTINATION lib/cmake/mylib
+		PATH_VARS INCLUDE_DIRS LIBRARIES LIB_DIR
+		INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX}
+)
+
+install(
+		FILES ${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake ${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+		DESTINATION lib/cmake/mylib
+)
