@@ -10,6 +10,8 @@ include_directories (
 include
 )
 
+include(CMakePackageConfigHelpers)
+
 aux_source_directory( src SRCS_DIRS)
 aux_source_directory( src/config SRCS_DIRS)
 aux_source_directory( src/constant SRCS_DIRS)
